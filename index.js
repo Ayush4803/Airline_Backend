@@ -1,14 +1,23 @@
 const express = require('express');
+const dotenv = require('dotenv');
+
+// Load environment variables first
+dotenv.config();
+
 const app = express();
-const dotenv=require('dotenv')
 
-dotenv.config()
-const PORT=process.env.PORT
+// Middleware to parse JSON and URL-encoded data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/',(req,res)=>{
-    res.send("Home page ")
-})
+// Import routes
+const routes = require('./src/routes'); // routes inside src/
 
-app.listen(PORT,()=>{
-    console.log(`Started the PORT ON PORT:${PORT}`)
+// Mount routes
+app.use('/', routes);
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server started on PORT: ${PORT}`);
 });
